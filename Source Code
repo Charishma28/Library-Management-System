@@ -1,0 +1,107 @@
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
+class Book {
+    public String title;
+    public String author;
+    public boolean isAvailable;
+    public Book(String title, String author) {
+        this.title = title;
+        this.author = author;
+        this.isAvailable = true;
+    }
+    public boolean isAvailable() {
+        return isAvailable;
+    }
+    public void setAvailable(boolean available) {
+        isAvailable = available;
+    }
+}
+class Library {
+    private List<Book> books;
+
+    public Library() {
+        this.books = new ArrayList<>();
+    }
+
+    public void addBook(Book book) {
+        books.add(book);
+    }
+
+    public void displayAvailableBooks() {
+    System.out.println("Available Books:");
+    for (Book book : books) {
+        if (book.isAvailable()) {
+            System.out.println(book.title + " by " + book.author);
+        }
+    }
+}
+    public void borrowBook(String title) {
+        for (Book book : books) {
+            if (book.title.equalsIgnoreCase(title) && book.isAvailable()) {
+                 book.setAvailable(false);
+                System.out.println("You have borrowed " + book.title);
+                return;
+            }
+        }
+        System.out.println("Book not found or already borrowed.");
+    }
+    public void returnBook(String title) {
+        for (Book book : books) {
+            if (book.title.equalsIgnoreCase(title) && !book.isAvailable()) {
+                book.setAvailable(true);
+                System.out.println("You have returned " + book.title);
+                return;
+            }
+        }
+        System.out.println("Book not found or already returned.");
+    }
+}
+class LibraryManagementSystem {
+    public static void main(String[] args) {
+        Library library = new Library();
+
+        // Adding books to the library
+        library.addBook(new Book("Java Programming", "John Doe"));
+        library.addBook(new Book("Python Basics", "Jane Smith"));
+	library.addBook(new Book("C Programming", "Bala Guru Swamy"));
+	library.addBook(new Book("C++ Programming", "Erik Myers"));
+	library.addBook(new Book("Data Structures and Algorithms", "Rudolph Russell"));
+
+        Scanner scanner = new Scanner(System.in);
+
+        while (true) {
+            System.out.println("\nLibrary Management System Menu:");
+            System.out.println("1. Display Available Books");
+            System.out.println("2. Borrow a Book");
+            System.out.println("3. Return a Book");
+            System.out.println("4. Exit");
+            System.out.print("Enter your choice: ");
+
+            int choice = scanner.nextInt();
+            scanner.nextLine(); 
+
+            switch (choice) {
+                case 1:
+                    library.displayAvailableBooks();
+                    break;
+                case 2:
+                    System.out.print("Enter the title of the book you want to borrow: ");
+                    String borrowTitle = scanner.nextLine();
+                    library.borrowBook(borrowTitle);
+                    break;
+                case 3:
+                    System.out.print("Enter the title of the book you want to return: ");
+                    String returnTitle = scanner.nextLine();
+                    library.returnBook(returnTitle);
+                    break;
+                case 4:
+                    System.out.println("Exiting Library Management System. Goodbye!");
+                    scanner.close();
+                    System.exit(0);
+                default:
+                    System.out.println("Invalid choice. Please try again.");
+            }
+        }
+    }
+}
